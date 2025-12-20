@@ -91,6 +91,7 @@
     sqlite
     clang
     cargo
+    firewalld-gui
   ];
 
   services.displayManager.sddm.enable = true;
@@ -120,12 +121,17 @@
   hardware.bluetooth.enable = true;
 
   nix.gc.automatic = true;
+  nix.gc.dates = "daily";
+  nix.gc.options = "--delete-older-than 7d";
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
+
+  services.firewalld.enable = true;
+  networking.nftables.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
