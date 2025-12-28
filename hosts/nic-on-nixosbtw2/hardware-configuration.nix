@@ -15,7 +15,6 @@
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/81dde869-6354-48bb-be6c-ea226c93fe61";
-      options = [ "compress=lzo" ];
       fsType = "btrfs";
     };
 
