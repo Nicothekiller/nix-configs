@@ -85,6 +85,7 @@
     clang
     cargo
     firewalld-gui
+    btop
   ];
 
   services.displayManager.sddm.enable = true;
