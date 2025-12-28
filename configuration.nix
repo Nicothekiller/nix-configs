@@ -52,8 +52,11 @@
     isNormalUser = true;
     description = "nic";
     createHome = true;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -63,7 +66,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim
-    fastfetch 
+    fastfetch
     kitty
     nushell
     chezmoi
@@ -86,9 +89,11 @@
     cargo
     firewalld-gui
     btop
+    nixfmt
   ];
 
   programs.steam.enable = true;
+  programs.kdeconnect.enable = true;
 
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
@@ -100,7 +105,6 @@
     elisa
     kate
   ];
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
