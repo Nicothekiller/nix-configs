@@ -91,6 +91,7 @@
     firewalld-gui
     btop
     nixfmt
+    kdePackages.ksshaskpass
   ];
 
   programs.steam.enable = true;
@@ -119,6 +120,15 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  programs.ssh = {
+    askPassword = "ksshaskpass";
+    enableAskPassword = true;
+  };
+
+  environment.sessionVariables = {
+    SSH_ASKPASS_REQUIRE = "prefer";
+  };
+
   hardware.bluetooth.enable = true;
 
   nix.gc.automatic = true;
