@@ -55,8 +55,9 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
-    packages = with pkgs; [ ];
+    # packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -132,6 +133,11 @@
 
   services.firewalld.enable = true;
   networking.nftables.enable = true;
+
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = false;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
