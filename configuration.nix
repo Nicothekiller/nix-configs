@@ -144,6 +144,8 @@
   services.firewalld.enable = true;
   networking.nftables.enable = true;
 
+  services.resolved.enable = true;
+
   virtualisation.docker = {
     enable = true;
     enableOnBoot = false;
