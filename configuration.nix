@@ -77,7 +77,6 @@
     starship
     carapace
     bat
-    nerd-fonts.jetbrains-mono
     python3
     unzip
     wget
@@ -93,6 +92,14 @@
     nixfmt
     kdePackages.ksshaskpass
   ];
+
+  fonts.packages = with pkgs; [
+    corefonts
+    vista-fonts
+    nerd-fonts.jetbrains-mono
+  ];
+
+  fonts.fontDir.enable = true;
 
   programs.steam.enable = true;
   programs.kdeconnect.enable = true;
