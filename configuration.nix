@@ -91,6 +91,7 @@
     btop
     nixfmt
     kdePackages.ksshaskpass
+    flutter
   ];
 
   fonts.packages = with pkgs; [
