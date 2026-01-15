@@ -92,6 +92,8 @@
     nixfmt
     kdePackages.ksshaskpass
     flutter
+    jdk
+    distrobox
   ];
 
   fonts.packages = with pkgs; [
