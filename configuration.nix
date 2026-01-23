@@ -94,6 +94,8 @@
     flutter
     jdk
     distrobox
+    lazydocker
+    opencode
   ];
 
   fonts.packages = with pkgs; [
