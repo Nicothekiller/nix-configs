@@ -14,13 +14,17 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   programs.ssh = {
-    askPassword = "ksshaskpass";
-    enableAskPassword = true;
+    # for using the kde ssh handler
+    # askPassword = "ksshaskpass";
+    # enableAskPassword = true;
+
+    startAgent = true;
   };
 
-  environment.sessionVariables = {
-    SSH_ASKPASS_REQUIRE = "prefer";
-  };
+  # for using the kde ssh handler
+  # environment.sessionVariables = {
+  #   SSH_ASKPASS_REQUIRE = "prefer";
+  # };
 
   hardware.bluetooth.enable = true;
 

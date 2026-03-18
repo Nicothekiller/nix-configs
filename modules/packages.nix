@@ -28,7 +28,6 @@
     firewalld-gui
     btop
     nixfmt
-    kdePackages.ksshaskpass
     flutter
     jdk
     distrobox
