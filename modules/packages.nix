@@ -35,7 +35,6 @@
     lazydocker
     opencode
     rust-analyzer
-    epson-escpr
   ];
 
   fonts.packages = with pkgs; [
