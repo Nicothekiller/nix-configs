@@ -14,8 +14,8 @@ modules/                    # Single-concern shared modules
   boot.nix                  #   Bootloader (systemd-boot) and kernel
   locale.nix                #   Timezone, locale, keymap
   users.nix                 #   User accounts and groups
-  packages.nix              #   System-wide packages and fonts
-  plasma.nix                #   KDE Plasma 6 desktop, SDDM, Flatpak
+  packages.nix              #   System-wide packages, fonts, and flatpak
+  plasma.nix                #   KDE Plasma 6 desktop, SDDM
   network.nix               #   NetworkManager, firewall, DNS
   services.nix              #   SSH, Bluetooth
   virtualisation.nix        #   Docker

@@ -5,6 +5,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use latest kernel.
+  # Use latest lts kernel.
   boot.kernelPackages = pkgs.linuxPackages;
 }
