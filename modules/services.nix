@@ -13,13 +13,14 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  programs.ssh = {
-    # for using the kde ssh handler
-    # askPassword = "ksshaskpass";
-    # enableAskPassword = true;
 
-    startAgent = true;
-  };
+  # programs.ssh = {
+  #   # for using the kde ssh handler
+  #   # askPassword = "ksshaskpass";
+  #   # enableAskPassword = true;
+  #
+  #   startAgent = true;
+  # };
 
   # for using the kde ssh handler
   # environment.sessionVariables = {
