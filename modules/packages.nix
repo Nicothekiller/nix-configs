@@ -24,7 +24,6 @@
     fd
     sqlite
     clang
-    cargo
     firewalld-gui
     btop
     nixfmt
@@ -33,7 +32,7 @@
     distrobox
     lazydocker
     opencode
-    rust-analyzer
+    rustup
   ];
 
   fonts.packages = with pkgs; [
