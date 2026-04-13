@@ -4,7 +4,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
+    pkgs.unstable.neovim
     fastfetch
     kitty
     nushell
@@ -31,7 +31,7 @@
     jdk
     distrobox
     lazydocker
-    opencode
+    pkgs.unstable.opencode
     rustup
   ];
 
