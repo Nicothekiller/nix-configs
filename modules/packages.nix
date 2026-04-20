@@ -33,6 +33,7 @@
     lazydocker
     pkgs.unstable.opencode
     rustup
+    appimage-run
   ];
 
   fonts.packages = with pkgs; [
