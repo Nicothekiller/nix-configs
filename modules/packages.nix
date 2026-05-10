@@ -27,9 +27,7 @@
     firewalld-gui
     btop
     nixfmt
-    flutter
     jdk
-    distrobox
     lazydocker
     pkgs.unstable.opencode
     rustup
