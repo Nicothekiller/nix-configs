@@ -45,4 +45,8 @@
   programs.steam.enable = true;
 
   services.flatpak.enable = true;
+
+  programs.steam.extraCompatPackages = [
+    pkgs.unstable.proton-ge-bin
+  ];
 }
