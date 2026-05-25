@@ -5,15 +5,20 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     pkgs.unstable.neovim
-    fastfetch
-    kitty
-    nushell
-    chezmoi
+
+    # disabled because of home manager
+    # fastfetch
+    # kitty
+    # nushell
+    # chezmoi
+
+    # zoxide
+    # starship
+    # carapace
+
     gh
     git
-    zoxide
-    starship
-    carapace
+
     bat
     python3
     unzip
@@ -27,7 +32,7 @@
     firewalld-gui
     btop
     nixfmt
-    jdk
+    # jdk
     lazydocker
 
     # handled in home.nix

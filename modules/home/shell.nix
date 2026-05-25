@@ -30,13 +30,6 @@ in
     "/.local/share/flatpak/exports/bin"
   ];
 
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-    settings = builtins.fromTOML (builtins.readFile ../../dotfiles/starship.toml);
-  };
-
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -158,11 +151,21 @@ in
     enable = true;
     enableBashIntegration = true;
     enableZshIntegration = true;
+    enableNushellIntegration = true;
+
+    options = [
+      "--cmd cd"
+    ];
   };
 
   programs.nushell = {
     enable = true;
     configFile.source = ../../dotfiles/nushell/config.nu;
-    envFile.source = ../../dotfiles/nushell/env.nu;
+
+    # was used for zoxide and stuff
+    # envFile.source = ../../dotfiles/nushell/env.nu;
   };
+
+  # should auto enable itself for all 3 shells
+  programs.carapace.enable = true;
 }

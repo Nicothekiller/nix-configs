@@ -17,12 +17,13 @@
 # You can remove these comments if you want or leave
 # them for future reference.
 
+# Disable zoxide, carapacce, and starship since now we handle that with home manager
 # zoxide
-source ~/.zoxide.nu
+# source ~/.zoxide.nu
 
 # starship
-mkdir ($nu.data-dir | path join "vendor/autoload")
-starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
+# mkdir ($nu.data-dir | path join "vendor/autoload")
+# starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
 
 # env
 $env.config.buffer_editor = "nvim"
@@ -39,7 +40,8 @@ $env.PATH = ($env.PATH | append [$"($env.HOME)/.local/bin", $"($env.HOME)/.cargo
 # aliases
 alias lg = lazygit
 alias cat = bat
-alias cd = z
+# broken with home manager, handle in shell.nix
+# alias cd = z
 alias ip = ip -color
 
 # functions
@@ -86,4 +88,4 @@ def dev [
 }
 
 # carapace config
-source $"($nu.cache-dir)/carapace.nu"
+# source $"($nu.cache-dir)/carapace.nu"
