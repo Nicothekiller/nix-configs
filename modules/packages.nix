@@ -29,7 +29,10 @@
     nixfmt
     jdk
     lazydocker
-    pkgs.unstable.opencode
+
+    # handled in home.nix
+    # pkgs.unstable.opencode
+
     rustup
     appimage-run
   ];
