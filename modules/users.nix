@@ -12,7 +12,11 @@
       "docker"
       "dialout"
     ];
+    shell = pkgs.zsh;
 
     # packages = with pkgs; [ ];
   };
+
+  # needed for default shell
+  programs.zsh.enable = true;
 }
