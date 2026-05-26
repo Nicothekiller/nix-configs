@@ -15,7 +15,7 @@
 
       provider."USFQ" = {
         name = "USFQ models";
-        options.baseURL = "https://ai.usfq.edu.ec/api/ai/main/v1";
+        options.baseURL = "https://ai.usfq.edu.ec/api/agents/llm/main/v1";
         models."deepseek-ai/DeepSeek-V4-Flash" = {
           name = "DeepSeek V4 Flash";
           limit = {
