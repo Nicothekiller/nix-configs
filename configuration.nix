@@ -10,7 +10,8 @@
     ./modules/locale.nix
     ./modules/users.nix
     ./modules/packages.nix
-    ./modules/plasma.nix
+    # ./modules/plasma.nix
+    ./modules/hyprland.nix
     ./modules/network.nix
     ./modules/services.nix
     ./modules/virtualisation.nix

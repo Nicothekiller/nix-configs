@@ -10,16 +10,15 @@
         ./home/opencode.nix
         ./home/starship.nix
         ./home/fastfetch.nix
+        ./home/kitty.nix
+        ./home/hyprland.nix
+        ./home/xdg.nix
       ];
 
       home.username = "nic";
       home.homeDirectory = "/home/nic";
 
-      home.stateVersion = "25.11";
-
-      xdg.configFile."kitty".source = ../dotfiles/kitty;
-
-      programs.kitty.enable = true;
+      home.stateVersion = "26.05";
 
       programs.git = {
         enable = true;

@@ -1,45 +1,58 @@
 { config, pkgs, ... }:
 
 {
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # Core CLI and development tools.
     pkgs.unstable.neovim
-
-    # disabled because of home manager
-    # fastfetch
-    # kitty
-    # nushell
-    # chezmoi
-
-    # zoxide
-    # starship
-    # carapace
-
+    bat
+    btop
+    clang
+    fd
     gh
     git
-
-    bat
-    python3
-    unzip
-    wget
-    tree-sitter
-    lazygit
-    ripgrep
-    fd
-    sqlite
-    clang
-    firewalld-gui
-    btop
-    nixfmt
-    # jdk
     lazydocker
-
-    # handled in home.nix
-    # pkgs.unstable.opencode
-
+    lazygit
+    nixfmt
+    python3
+    ripgrep
     rustup
+    sqlite
+    tree-sitter
+    wget
+
+    # Archive and removable-media helpers used by Dolphin/UDisks.
+    dosfstools
+    exfatprogs
+    ntfs3g
+    unzip
+
+    # KDE apps and KIO helpers for Dolphin outside a full Plasma session.
+    kdePackages.ark
+    kdePackages.breeze
+    kdePackages.breeze-icons
+    kdePackages.dolphin
+    kdePackages.gwenview
+    kdePackages.kio-admin
+    kdePackages.kio
+    kdePackages.kio-extras
+    kdePackages.kio-fuse
+    kdePackages.konsole
+    kdePackages.okular
+
+    # Qt/KDE configuration utilities used by Home Manager activation hooks.
+    libsForQt5.qt5ct
+    kdePackages.kconfig
+    kdePackages.kservice
+    kdePackages.qt6ct
+
+    # Icon fallbacks for incomplete application icon themes.
+    adwaita-icon-theme
+    hicolor-icon-theme
+
+    # Desktop apps and runtime wrappers.
     appimage-run
+    firewalld-gui
+    vesktop
   ];
 
   fonts.packages = with pkgs; [
@@ -57,4 +70,6 @@
   programs.steam.extraCompatPackages = [
     pkgs.unstable.proton-ge-bin
   ];
+
+  programs.kdeconnect.enable = true;
 }

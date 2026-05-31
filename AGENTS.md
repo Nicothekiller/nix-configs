@@ -7,7 +7,7 @@ codebase is written in the Nix expression language.
 ## Repository Structure
 
 ```
-flake.nix                   # Flake entry point: inputs (nixpkgs 25.11) and host definitions
+flake.nix                   # Flake entry point: inputs (nixpkgs 26.05) and host definitions
 flake.lock                  # Pinned dependency versions
 configuration.nix           # Shared top-level config, imports all modules
 modules/                    # Single-concern shared modules
@@ -15,18 +15,31 @@ modules/                    # Single-concern shared modules
   locale.nix                #   Timezone, locale, keymap
   users.nix                 #   User accounts and groups
   packages.nix              #   System-wide packages, fonts, and flatpak
-  plasma.nix                #   KDE Plasma 6 desktop, SDDM
-  network.nix               #   NetworkManager, firewall, DNS
-  services.nix              #   SSH, Bluetooth
+  hyprland.nix              #   Hyprland + DMS compositor, portal, session env vars
+  # plasma.nix              #   KDE Plasma 6 desktop, SDDM (disabled)
+  network.nix               #   NetworkManager, firewalld, DNS
+  services.nix              #   SSH, Bluetooth, UPower, UDisks2, PolKit, printing
   virtualisation.nix        #   Docker
-  nix.nix                   #   Nix settings (unfree, flakes, GC, nix-ld)
+  nix.nix                   #   Nix settings (unfree, flakes, GC, nix-ld, nix-ld)
+  home.nix                  #   Home Manager entry point
+  home/                     #   Home Manager submodules
+    shell.nix               #     Zsh, bash, nushell config, aliases, zoxide, carapace
+    starship.nix            #     Starship prompt
+    fastfetch.nix           #     Fastfetch system info
+    opencode.nix            #     opencode AI CLI config
+    kitty.nix               #     Kitty terminal + theme symlinks
+    xdg.nix                 #     XDG aggregator (imports below)
+    xdg/cursor.nix          #       Breeze cursor theme
+    xdg/kde.nix             #       Dolphin config, KDE globals, service menu, menu
+    xdg/mime-apps.nix       #       MIME defaults (PDF/Okular, images/Gwenview, dirs/Dolphin)
+    xdg/qt.nix              #       Qt5ct/Qt6ct matugen palette + icon theme
 hosts/                      # Per-host overrides
   nic-on-nixosbtw/          #   Host 1 (Intel, ext4, no discrete GPU)
     hardware-configuration.nix
-    local-configuration.nix
-  nic-on-nixosbtw2/         #   Host 2 (Intel, btrfs, NVIDIA GPU)
+    local-configuration.nix  #     Intel VA-API drivers
+  nic-on-nixosbtw2/         #   Host 2 (Intel, btrfs, NVIDIA dGPU)
     hardware-configuration.nix
-    local-configuration.nix
+    local-configuration.nix  #     NVIDIA open driver + Intel/NVIDIA VA-API
 ```
 
 ### Architecture
