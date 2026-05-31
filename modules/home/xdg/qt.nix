@@ -5,6 +5,7 @@
   # a symlink so both Qt generations follow the same wallpaper-derived theme.
   xdg.configFile."qt6ct/qt6ct.conf".text = ''
     [Appearance]
+    style=Breeze
     icon_theme=breeze-dark
     color_scheme_path=/home/nic/.config/qt6ct/colors/matugen.conf
     custom_palette=true
@@ -12,6 +13,7 @@
 
   xdg.configFile."qt5ct/qt5ct.conf".text = ''
     [Appearance]
+    style=Breeze
     icon_theme=breeze-dark
     color_scheme_path=/home/nic/.config/qt5ct/colors/matugen.conf
     custom_palette=true

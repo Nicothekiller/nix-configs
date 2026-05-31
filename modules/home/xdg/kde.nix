@@ -55,6 +55,9 @@
       --key TerminalApplication kitty
     ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
       --file kdeglobals --group General \
+      --key ColorScheme DankMatugenDark
+    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+      --file kdeglobals --group General \
       --key TerminalService --delete
     ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
       --file kdeglobals --group Icons \

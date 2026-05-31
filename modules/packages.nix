@@ -29,6 +29,7 @@
     # KDE apps and KIO helpers for Dolphin outside a full Plasma session.
     kdePackages.ark
     kdePackages.breeze
+    kdePackages.breeze-gtk
     kdePackages.breeze-icons
     kdePackages.dolphin
     kdePackages.gwenview

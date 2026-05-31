@@ -13,6 +13,7 @@
         ./home/kitty.nix
         ./home/hyprland.nix
         ./home/xdg.nix
+        ./home/xdg/gtk.nix
       ];
 
       home.username = "nic";
