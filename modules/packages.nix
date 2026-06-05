@@ -60,6 +60,10 @@
     corefonts
     vista-fonts
     nerd-fonts.jetbrains-mono
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    ipafont
   ];
 
   fonts.fontDir.enable = true;
