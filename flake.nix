@@ -22,6 +22,17 @@
       unstableOverlay = final: prev: {
         unstable = import nixpkgs-unstable { inherit system; };
       };
+      flatpakFontFixOverlay = final: prev: {
+        flatpak = prev.flatpak.overrideAttrs (old: {
+          patches = builtins.map (
+            p:
+            if builtins.baseNameOf p == "fix-fonts-icons.patch" then
+              ./modules/patches/fix-fonts-icons.patch
+            else
+              p
+          ) (old.patches or [ ]);
+        });
+      };
     in
     {
       nixosConfigurations = {
@@ -29,7 +40,10 @@
           inherit system;
           modules = [
             {
-              nixpkgs.overlays = [ unstableOverlay ];
+              nixpkgs.overlays = [
+                unstableOverlay
+                flatpakFontFixOverlay
+              ];
             }
 
             home-manager.nixosModules.home-manager
@@ -42,7 +56,10 @@
           inherit system;
           modules = [
             {
-              nixpkgs.overlays = [ unstableOverlay ];
+              nixpkgs.overlays = [
+                unstableOverlay
+                flatpakFontFixOverlay
+              ];
             }
 
             home-manager.nixosModules.home-manager

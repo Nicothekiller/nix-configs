@@ -4,7 +4,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
 
-    users.nic = { config, pkgs, lib, ... }: {
+    users.nic = { ... }: {
       imports = [
         ./home/shell.nix
         ./home/opencode.nix
@@ -20,14 +20,6 @@
       home.homeDirectory = "/home/nic";
 
       home.stateVersion = "26.05";
-
-      # Copy system fonts to ~/.local/share/fonts so flatpak apps can find them.
-      # Flatpak automatically mounts ~/.local/share/fonts into the sandbox.
-      home.activation.copySystemFonts = lib.hm.dag.entryAfter ["linkGeneration"] ''
-        mkdir -p ~/.local/share/fonts
-        cp -L /run/current-system/sw/share/X11/fonts/* ~/.local/share/fonts/
-        ${pkgs.fontconfig}/bin/fc-cache -fv
-      '';
 
       programs.git = {
         enable = true;
