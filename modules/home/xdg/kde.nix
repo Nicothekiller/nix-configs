@@ -46,28 +46,20 @@
     Type=Application
   '';
 
-  # Use Kitty for external terminal launches. TerminalService is deleted because
-  # KDE service lookup can be brittle under non-Plasma sessions; the command is
-  # enough for Dolphin's external terminal actions.
+  # Use the declarative qt.kde.settings module which wraps kwriteconfig6 calls
+  # in the activation script and sends DBus reload signals to KWin/KGlobalSettings.
+  qt.kde.settings = {
+    "kdeglobals".General.TerminalApplication = "kitty";
+    "kdeglobals".General.TerminalService = null;
+    "kdeglobals".UiSettings.ColorScheme = "DankMatugen";
+    "kdeglobals".Icons.Theme = "breeze-dark";
+    "kcminputrc".Mouse.cursorTheme = "breeze_cursors";
+    "kcminputrc".Mouse.cursorSize = 24;
+  };
+
+  # kbuildsycoca6 is not covered by qt.kde.settings; rebuild the KDE service
+  # cache so Dolphin discovers applications correctly.
   home.activation.updateKdeServiceCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kdeglobals --group General \
-      --key TerminalApplication kitty
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kdeglobals --group UiSettings \
-      --key ColorScheme DankMatugen
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kdeglobals --group General \
-      --key TerminalService --delete
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kdeglobals --group Icons \
-      --key Theme breeze-dark
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kcminputrc --group Mouse \
-      --key cursorTheme breeze_cursors
-    ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
-      --file kcminputrc --group Mouse \
-      --key cursorSize 24
     XDG_MENU_PREFIX= \
       ${pkgs.kdePackages.kservice}/bin/kbuildsycoca6 --noincremental
   '';

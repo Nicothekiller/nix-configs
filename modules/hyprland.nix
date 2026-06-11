@@ -25,8 +25,4 @@
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.sessionVariables.QT_QPA_PLATFORMTHEME = "qt5ct";
-  environment.sessionVariables.QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
-  environment.sessionVariables.XCURSOR_THEME = "breeze_cursors";
-  environment.sessionVariables.XDG_MENU_PREFIX = "";
 }

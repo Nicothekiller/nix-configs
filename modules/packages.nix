@@ -40,6 +40,7 @@
     kdePackages.konsole
     kdePackages.okular
     kdePackages.kcalc
+    haruna
 
     # Qt/KDE configuration utilities used by Home Manager activation hooks.
     libsForQt5.qt5ct
