@@ -19,6 +19,7 @@
     sqlite
     tree-sitter
     wget
+    gnumake
 
     # Archive and removable-media helpers used by Dolphin/UDisks.
     dosfstools
