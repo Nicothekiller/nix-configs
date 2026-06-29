@@ -69,6 +69,9 @@
     ipafont
   ];
 
+  # HACK: allow insecure pnpm because vesktop uses it as part of the build, remove when upstream fixes this
+  nixpkgs.config.permittedInsecurePackages = [ "pnpm-10.29.2" ];
+
   fonts.fontDir.enable = true;
 
   programs.steam.enable = true;
