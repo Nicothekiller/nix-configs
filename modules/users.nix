@@ -9,7 +9,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
       "dialout"
     ];
     shell = pkgs.zsh;
