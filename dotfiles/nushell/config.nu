@@ -31,6 +31,12 @@ $env.EDITOR = "nvim"
 $env.config.show_banner = false
 $env.config.edit_mode = "vi"
 
+# for history isolation
+$env.config.history.file_format = "sqlite"
+$env.config.history.isolation = true
+
+$env.config.use_kitty_protocol = true
+
 # for python venv, starship already does this.
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 
@@ -45,15 +51,6 @@ alias cat = bat
 alias ip = ip -color
 
 # functions
-
-# For searching arch packages and their info
-def pacbrowse [] {
-  pacman -Slq | fzf --multi --preview 'pacman -Si {1}'
-}
-# For searching arch/aur packages and their info
-def yaybrowse [] {
-  yay -Slq | fzf --multi --preview 'yay -Si {1}'
-}
 
 # For renaming tabs in kitty more easily
 def krn [str: string] {
