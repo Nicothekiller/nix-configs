@@ -17,6 +17,7 @@
     ./modules/virtualisation.nix
     ./modules/nix.nix
     ./modules/home.nix
+    ./modules/tailscale.nix
   ];
 
   # This value determines the NixOS release from which the default
