@@ -6,11 +6,13 @@
     withUWSM = true;
   };
   programs.dms-shell = {
+    package = pkgs.unstable.dms-shell;
     enable = true;
     systemd.enable = true;
   };
 
   services.displayManager.dms-greeter = {
+    package = pkgs.unstable.dms-shell;
     enable = true;
     compositor.name = "hyprland";
     configHome = "/home/nic";
