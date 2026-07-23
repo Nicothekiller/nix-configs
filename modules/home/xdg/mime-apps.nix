@@ -2,6 +2,7 @@
 
 let
   gwenview = [ "org.kde.gwenview.desktop" ];
+  neovim = [ "nvim.desktop" ];
   okular = [ "okularApplication_pdf.desktop" ];
 in
 {
@@ -17,6 +18,7 @@ in
       "image/svg+xml" = gwenview;
       "image/tiff" = gwenview;
       "image/webp" = gwenview;
+      "text/plain" = neovim;
     };
 
     associations = {
@@ -30,6 +32,7 @@ in
         "image/svg+xml" = gwenview;
         "image/tiff" = gwenview;
         "image/webp" = gwenview;
+        "text/plain" = neovim;
       };
 
       removed = {
