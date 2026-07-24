@@ -1,10 +1,9 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Use latest lts kernel.
-  boot.kernelPackages = pkgs.linuxPackages;
+  flake.modules.nixos.boot = { pkgs, ... }: {
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+    boot.kernelPackages = pkgs.linuxPackages;
+  };
 }

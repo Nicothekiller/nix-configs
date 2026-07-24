@@ -7,47 +7,60 @@ codebase is written in the Nix expression language.
 ## Repository Structure
 
 ```
-flake.nix                   # Flake entry point: inputs (nixpkgs 26.05) and host definitions
+flake.nix                   # Flake inputs and flake-parts entry point
 flake.lock                  # Pinned dependency versions
-configuration.nix           # Shared top-level config, imports all modules
-modules/                    # Single-concern shared modules
-  boot.nix                  #   Bootloader (systemd-boot) and kernel
-  locale.nix                #   Timezone, locale, keymap
-  users.nix                 #   User accounts and groups
-  packages.nix              #   System-wide packages, fonts, and flatpak
-  hyprland.nix              #   Hyprland + DMS compositor, portal, session env vars
-  # plasma.nix              #   KDE Plasma 6 desktop, SDDM (disabled)
-  network.nix               #   NetworkManager, firewalld, DNS
-  services.nix              #   SSH, Bluetooth, UPower, UDisks2, PolKit, printing
-  virtualisation.nix        #   Docker
-  nix.nix                   #   Nix settings (unfree, flakes, GC, nix-ld, nix-ld)
-  home.nix                  #   Home Manager entry point
-  home/                     #   Home Manager submodules
-    shell.nix               #     Zsh, bash, nushell config, aliases, zoxide, carapace
-    starship.nix            #     Starship prompt
-    fastfetch.nix           #     Fastfetch system info
-    opencode.nix            #     opencode AI CLI config
-    kitty.nix               #     Kitty terminal + theme symlinks
-    xdg.nix                 #     XDG aggregator (imports below)
-    xdg/cursor.nix          #       Breeze cursor theme
-    xdg/kde.nix             #       Dolphin config, KDE globals, service menu, menu
-    xdg/mime-apps.nix       #       MIME defaults (PDF/Okular, images/Gwenview, dirs/Dolphin)
-    xdg/qt.nix              #       Qt5ct/Qt6ct matugen palette + icon theme
-hosts/                      # Per-host overrides
-  nic-on-nixosbtw/          #   Host 1 (Intel, ext4, no discrete GPU)
-    hardware-configuration.nix
-    local-configuration.nix  #     Intel VA-API drivers
-  nic-on-nixosbtw2/         #   Host 2 (Intel, btrfs, NVIDIA dGPU)
-    hardware-configuration.nix
-    local-configuration.nix  #     NVIDIA open driver + Intel/NVIDIA VA-API
+modules/                    # Auto-imported flake-parts modules
+  hosts.nix                 # NixOS outputs and host composition
+  home-manager.nix          # Home Manager integration and user base
+  overlays.nix              # Shared nixpkgs overlays
+  boot.nix                  # Bootloader and kernel
+  cli-tools.nix             # CLI and development packages
+  applications.nix          # Desktop applications
+  desktop-theme/            # GTK, Qt, cursor, and theme packages
+  file-manager/             # Dolphin, KIO, MIME, and filesystem helpers
+  terminal/                 # Shell environment and shell integrations
+  desktop-services.nix      # Flatpak and KDE Connect
+  desktop-services-system.nix # Bluetooth, PolKit, UDisks2, UPower
+  fonts.nix                 # System fonts
+  gaming.nix                # Steam and Proton-GE
+  hyprland.nix              # Hyprland, DMS, portals, and user config
+  locale.nix                # Timezone, locale, and keymaps
+  network.nix               # NetworkManager, firewalld, DNS
+  nix.nix                   # Nix settings and nix-ld
+  printing.nix              # CUPS and printer drivers
+  ssh.nix                   # OpenSSH
+  tailscale.nix             # Tailscale
+  users.nix                 # User accounts and groups
+  virtualisation.nix        # Podman and Compose tools
+hosts/                      # Host-specific NixOS modules
+  nic-on-nixosbtw/          # Intel host using ext4
+    hardware-configuration.nix # Auto-generated hardware detection
+    local-configuration.nix # Intel VA-API settings
+  nic-on-nixosbtw2/         # Intel host with NVIDIA dGPU using btrfs
+    hardware-configuration.nix # Auto-generated hardware detection
+    local-configuration.nix # NVIDIA and filesystem settings
+dotfiles/                   # Out-of-store application configuration
 ```
 
 ### Architecture
 
-Each host is composed of three layers in `flake.nix`:
-1. `configuration.nix` -- shared base (imports all `modules/*`)
-2. `hosts/<hostname>/hardware-configuration.nix` -- auto-generated hardware detection
-3. `hosts/<hostname>/local-configuration.nix` -- manual host-specific overrides
+This repository uses the dendritic pattern with `flake-parts` and
+`import-tree`:
+
+- Every `.nix` file under `modules/` is automatically imported as a
+  flake-parts module.
+- Shared features publish NixOS modules through
+  `flake.modules.nixos.<feature>` and Home Manager modules through
+  `flake.modules.homeManager.<feature>`.
+- Host definitions include all shared NixOS modules automatically.
+- The Home Manager base module includes all shared Home Manager modules
+  automatically.
+- Files under `hosts/<hostname>/` are ordinary NixOS modules and contain only
+  hardware configuration or host-specific overrides.
+
+There is intentionally no shared `configuration.nix`, package aggregator, or
+manual module import list. Add shared features under `modules/`; add
+host-specific settings under the corresponding `hosts/` directory.
 
 ## Build / Rebuild Commands
 
@@ -64,16 +77,16 @@ sudo nixos-rebuild test --flake .#<hostname>
 # Build only -- no activation, good for checking if config evaluates
 sudo nixos-rebuild build --flake .#<hostname>
 
-# Validate flake structure (no custom checks are defined)
-nix flake check
+# Validate flake structure and NixOS configurations
+nix flake check path:.
 
-# Update flake.lock to latest nixpkgs
+# Update flake.lock to latest inputs
 nix flake update
 ```
 
 ## Formatting
 
-The project uses `nixfmt` (installed in `modules/packages.nix`). There is no
+The project uses `nixfmt` (installed in `modules/cli-tools.nix`). There is no
 pre-commit hook or CI pipeline enforcing formatting.
 
 ```bash
@@ -86,12 +99,13 @@ find . -name '*.nix' -exec nixfmt {} +
 
 ## Testing / Validation
 
-There are no unit tests or NixOS VM tests defined. Validation is done by
+There are no unit tests or automated NixOS VM tests defined. Manual VM testing
+is useful for activation and desktop behavior; evaluation is validated by
 building the configuration:
 
 ```bash
 # Dry-run build to catch evaluation errors without writing to the store
-nix build .#nixosConfigurations.nic-on-nixosbtw.config.system.build.toplevel --dry-run
+nix build path:.#nixosConfigurations.nic-on-nixosbtw.config.system.build.toplevel --dry-run
 
 # Full build (validates the entire config evaluates and all derivations resolve)
 sudo nixos-rebuild build --flake .#<hostname>
@@ -182,8 +196,11 @@ Short lists: inline on one line (`[ "xhci_pci" "ahci" "nvme" ]`).
 
 ### Imports
 
-- Use relative paths in `imports` lists: `./modules/boot.nix`
-- Hardware configs use `modulesPath` string concatenation for nixpkgs internals
+- Shared modules under `modules/` are auto-imported; do not add manual import
+  lists for them.
+- Host definitions in `modules/hosts.nix` explicitly reference the matching
+  hardware and local configuration files under `hosts/`.
+- Hardware configs use `modulesPath` string concatenation for nixpkgs internals.
 
 ### Comments
 
@@ -205,16 +222,20 @@ standard NixOS pattern.
 
 ### Adding a New Module
 
-1. Create `modules/<name>.nix` with the standard signature
-2. Add `./modules/<name>.nix` to the imports list in `configuration.nix`
-3. Keep it single-concern
+1. Create a focused `.nix` file under `modules/`.
+2. Publish the feature as `flake.modules.nixos.<feature>`,
+   `flake.modules.homeManager.<feature>`, or both.
+3. Keep each file focused on one concern. Multiple files may contribute to the
+   same feature name when a feature needs to be split by implementation detail.
+4. Do not add the file to an import list; `import-tree` discovers it
+   automatically.
 
 ### Adding a New Host
 
 1. Create `hosts/<hostname>/` directory
 2. Generate `hardware-configuration.nix` with `nixos-generate-config`
 3. Create `local-configuration.nix` with host-specific overrides (at minimum: `networking.hostName`)
-4. Add a new `nixosConfigurations.<hostname>` entry in `flake.nix`
+4. Add a new `nixosConfigurations.<hostname>` entry in `modules/hosts.nix`
 
 ## Git Conventions
 

@@ -1,8 +1,10 @@
 { ... }:
 
 {
-  programs.kitty.enable = true;
+  flake.modules.homeManager.kitty = {
+    programs.kitty.enable = true;
 
-  xdg.configFile."kitty/kitty.conf".source = ../../dotfiles/kitty/kitty.conf;
-  xdg.configFile."kitty/Darkside.conf".source = ../../dotfiles/kitty/Darkside.conf;
+    xdg.configFile."kitty/kitty.conf".source = ../../dotfiles/kitty/kitty.conf;
+    xdg.configFile."kitty/Darkside.conf".source = ../../dotfiles/kitty/Darkside.conf;
+  };
 }
