@@ -7,6 +7,8 @@
       cisco-packet-tracer
     ];
 
+    programs.wireshark.enable = true;
+
     users.users.nic.extraGroups = [
       "wireshark"
     ];
