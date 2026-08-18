@@ -20,12 +20,23 @@ let
       ) (old.patches or [ ]);
     });
   };
+
+  ciscoPacketTracerOverlay = final: prev: {
+    cisco-packet-tracer = final.callPackage ../packages/cisco-packet-tracer.nix {
+      version = "9.0.1";
+      src = builtins.path {
+        path = inputs.cisco-packet-tracer-deb;
+        name = "CiscoPacketTracer_901_Ubuntu_64bit.deb";
+      };
+    };
+  };
 in
 {
   flake.modules.nixos.overlays = {
     nixpkgs.overlays = [
       unstableOverlay
       flatpakFontFixOverlay
+      ciscoPacketTracerOverlay
     ];
   };
 }

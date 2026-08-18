@@ -10,6 +10,11 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    cisco-packet-tracer-deb = {
+      url = "path:/home/nic/Downloads/CiscoPacketTracer_901_Ubuntu_64bit.deb";
+      flake = false;
+    };
   };
 
   outputs =

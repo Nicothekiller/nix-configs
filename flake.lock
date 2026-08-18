@@ -1,5 +1,18 @@
 {
   "nodes": {
+    "cisco-packet-tracer-deb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787068374,
+        "narHash": "sha256-biYiu0gukHHLRvwXiOSK3jblrslvwqwXMCHG7og6JpY=",
+        "path": "/home/nic/Downloads/CiscoPacketTracer_901_Ubuntu_64bit.deb",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/nic/Downloads/CiscoPacketTracer_901_Ubuntu_64bit.deb",
+        "type": "path"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -103,6 +116,7 @@
     },
     "root": {
       "inputs": {
+        "cisco-packet-tracer-deb": "cisco-packet-tracer-deb",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
