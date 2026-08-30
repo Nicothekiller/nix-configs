@@ -20,6 +20,7 @@
       sqlite
       tree-sitter
       wget
+      unstable.typst
     ];
   };
 }
