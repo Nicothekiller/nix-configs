@@ -4,6 +4,7 @@
 hl.on("hyprland.start", function()
 	hl.exec_cmd("dbus-update-activation-environment --systemd --all")
 	hl.exec_cmd("systemctl --user start hyprland-session.target")
+	hl.exec_cmd("systemd-inhibit --who='Hyprland' --why='power button to powermenu' --what=handle-power-key --mode=block sleep infinity")
 end)
 -- DMS_STARTUP_END
 
@@ -90,6 +91,11 @@ hl.layer_rule({ match = { namespace = "^(quickshell)$" }, no_anim = true })
 hl.layer_rule({ match = { namespace = "^dms:.*" }, no_anim = true })
 
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("kcalc"))
+
+-- Power button opens the DMS powermenu instead of powering off.
+-- logind is blocked via systemd-inhibit on hyprland.start, and without
+-- the `locked` flag this bind stays inactive on the lock screen.
+hl.bind("XF86PowerOff", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
 
 require("dms.colors")
 require("dms.outputs")
