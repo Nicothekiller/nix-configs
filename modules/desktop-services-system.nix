@@ -6,5 +6,6 @@
     security.polkit.enable = true;
     services.udisks2.enable = true;
     services.upower.enable = true;
+    services.thermald.enable = true;
   };
 }
