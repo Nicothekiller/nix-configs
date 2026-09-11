@@ -1,14 +1,6 @@
 { inputs, ... }:
 
 let
-  system = "x86_64-linux";
-
-  unstableOverlay = final: prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      inherit system;
-    };
-  };
-
   flatpakFontFixOverlay = final: prev: {
     flatpak = prev.flatpak.overrideAttrs (old: {
       patches = builtins.map (
@@ -34,7 +26,6 @@ in
 {
   flake.modules.nixos.overlays = {
     nixpkgs.overlays = [
-      unstableOverlay
       flatpakFontFixOverlay
       ciscoPacketTracerOverlay
     ];

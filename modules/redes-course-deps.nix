@@ -2,7 +2,7 @@
 {
   flake.modules.nixos.redes-course-deps = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      pkgs.unstable.containerlab
+      pkgs.containerlab
       wireshark
       cisco-packet-tracer
     ];

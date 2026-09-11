@@ -32,13 +32,13 @@
       warnAboutRisksBeforeActingAsAdmin=false
 
       [UiSettings]
-      ColorScheme=DankMatugen
+      ColorScheme=noctalia
     '';
 
     qt.kde.settings = {
       "kdeglobals".General.TerminalApplication = "kitty";
       "kdeglobals".General.TerminalService = null;
-      "kdeglobals".UiSettings.ColorScheme = "DankMatugen";
+      "kdeglobals".UiSettings.ColorScheme = "noctalia";
       "kdeglobals".Icons.Theme = "breeze-dark";
       "kcminputrc".Mouse.cursorTheme = "breeze_cursors";
       "kcminputrc".Mouse.cursorSize = 24;

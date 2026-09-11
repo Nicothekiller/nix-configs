@@ -1,12 +1,10 @@
 -- Hyprland configuration (Lua) — https://wiki.hypr.land/Configuring/Start/
 
--- DMS_STARTUP_BEGIN
 hl.on("hyprland.start", function()
-	hl.exec_cmd("dbus-update-activation-environment --systemd --all")
-	hl.exec_cmd("systemctl --user start hyprland-session.target")
-	hl.exec_cmd("systemd-inhibit --who='Hyprland' --why='power button to powermenu' --what=handle-power-key --mode=block sleep infinity")
+  hl.exec_cmd("noctalia")
+  hl.exec_cmd(
+    "systemd-inhibit --who='Hyprland' --why='power button to session panel' --what=handle-power-key --mode=block sleep infinity")
 end)
--- DMS_STARTUP_END
 
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
 hl.env("QT_QPA_PLATFORMTHEME_QT6", "qt6ct")
@@ -14,93 +12,70 @@ hl.env("XCURSOR_THEME", "breeze_cursors")
 hl.env("XDG_MENU_PREFIX", "")
 
 hl.config({
-	input = {
-		kb_layout = "latam",
-		numlock_by_default = true,
-		kb_options = "caps:swapescape",
-		follow_mouse = 0,
-		touchpad = {
-			tap_to_click = true,
-			natural_scroll = false,
-		},
-	},
-	general = {
-		gaps_in = 5,
-		gaps_out = 5,
-		border_size = 2,
-		layout = "scrolling",
-	},
-	decoration = {
-		rounding = 12,
-		active_opacity = 1.0,
-		inactive_opacity = 1.0,
-		shadow = {
-			enabled = true,
-			range = 30,
-			render_power = 5,
-			offset = "0 5",
-			color = "rgba(00000070)",
-		},
-	},
-	misc = {
-		disable_hyprland_logo = true,
-		disable_splash_rendering = true,
-	},
-	xwayland = {
-		force_zero_scaling = true,
-	},
-	dwindle = {
-		preserve_split = true,
-	},
-	master = {
-		mfact = 0.5,
-	},
+  input = {
+    kb_layout = "latam",
+    numlock_by_default = true,
+    kb_options = "caps:swapescape",
+    follow_mouse = 0,
+    touchpad = {
+      tap_to_click = true,
+      natural_scroll = false,
+    },
+  },
+  general = {
+    gaps_in = 5,
+    gaps_out = 5,
+    border_size = 2,
+    layout = "scrolling",
+  },
+  decoration = {
+    rounding = 12,
+    active_opacity = 1.0,
+    inactive_opacity = 1.0,
+    shadow = {
+      enabled = true,
+      range = 30,
+      render_power = 5,
+      offset = "0 5",
+      color = "rgba(00000070)",
+    },
+    blur = {
+      enabled = true,
+      size = 3,
+      passes = 2,
+      vibrancy = 0.1696,
+    },
+  },
+  misc = {
+    disable_hyprland_logo = true,
+    disable_splash_rendering = true,
+  },
+  xwayland = {
+    force_zero_scaling = true,
+  },
+  dwindle = {
+    preserve_split = true,
+  },
+  master = {
+    mfact = 0.5,
+  },
 })
 
-hl.animation({ leaf = "windowsIn", enabled = true, speed = 3, bezier = "default" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "default" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 5, bezier = "default" })
-hl.animation({ leaf = "windowsMove", enabled = true, speed = 4, bezier = "default" })
-hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "default" })
-hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "default" })
-
-hl.window_rule({ match = { class = "^(org\\.wezfurlong\\.wezterm)$" }, tile = true })
-hl.window_rule({ match = { class = "^(org\\.gnome\\.)" }, rounding = 12 })
-hl.window_rule({ match = { class = "^(gnome-control-center)$" }, tile = true })
-hl.window_rule({ match = { class = "^(pavucontrol)$" }, tile = true })
-hl.window_rule({ match = { class = "^(nm-connection-editor)$" }, tile = true })
-hl.window_rule({ match = { class = "^(org\\.gnome\\.Calculator)$" }, float = true })
-hl.window_rule({ match = { class = "^(gnome-calculator)$" }, float = true })
-hl.window_rule({ match = { class = "^(galculator)$" }, float = true })
-hl.window_rule({ match = { class = "^(blueman-manager)$" }, float = true })
-hl.window_rule({ match = { class = "^(org\\.gnome\\.Nautilus)$" }, float = true })
-hl.window_rule({ match = { class = "^(xdg-desktop-portal)$" }, float = true })
-hl.window_rule({
-	match = { class = "^(steam)$", title = "^(notificationtoasts)" },
-	no_initial_focus = true,
-	pin = true,
+-- === Monitors (replaces DMS auto outputs: pin native scale) ===
+-- Scale comes per-host from HYPR_MONITOR_SCALE (see hosts/*/local-configuration.nix).
+hl.monitor({
+  output = "eDP-1",
+  mode = "preferred",
+  position = "auto",
+  scale = tonumber(os.getenv("HYPR_MONITOR_SCALE")) or 1,
 })
-hl.window_rule({
-	match = { title = "^(Picture-in-Picture)$" },
-	float = true,
-	pin = true,
-})
-hl.window_rule({ match = { class = "^(zoom)$" }, float = true })
-hl.window_rule({ match = { title = "^(KCalc)$" }, float = true })
-hl.layer_rule({ match = { namespace = "^(quickshell)$" }, no_anim = true })
-hl.layer_rule({ match = { namespace = "^dms:.*" }, no_anim = true })
 
-hl.bind("XF86Calculator", hl.dsp.exec_cmd("kcalc"))
+require("binds")
+require("windowrules")
 
--- Power button opens the DMS powermenu instead of powering off.
--- logind is blocked via systemd-inhibit on hyprland.start, and without
--- the `locked` flag this bind stays inactive on the lock screen.
-hl.bind("XF86PowerOff", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
-
-require("dms.colors")
-require("dms.outputs")
-require("dms.layout")
-require("dms.cursor")
-require("dms.binds")
-require("dms.binds-user")
-require("dms.windowrules")
+-- Noctalia-managed theme, generated by the Hyprland template into
+-- ~/.config/hypr/noctalia.lua. Guarded so a missing file can't break the config.
+local hasNoctaliaTheme, noctaliaTheme = pcall(require, "noctalia")
+if hasNoctaliaTheme and noctaliaTheme and noctaliaTheme.apply_theme then
+  noctaliaTheme.apply_theme()
+end

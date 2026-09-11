@@ -3,6 +3,7 @@
 {
   flake.modules.homeManager.desktop-theme = { pkgs, ... }: {
     home.pointerCursor = {
+      enable = true;
       package = pkgs.kdePackages.breeze;
       name = "breeze_cursors";
       size = 24;

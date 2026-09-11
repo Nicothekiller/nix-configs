@@ -6,16 +6,24 @@
       enable = true;
       withUWSM = true;
     };
-    programs.dms-shell = {
-      package = pkgs.unstable.dms-shell;
+    programs.noctalia = {
       enable = true;
       systemd.enable = true;
+      systemd.target = "hyprland-session.target";
+      recommendedServices.enable = true;
     };
-    services.displayManager.dms-greeter = {
-      package = pkgs.unstable.dms-shell;
+    services.displayManager.noctalia-greeter = {
       enable = true;
-      compositor.name = "hyprland";
-      configHome = "/home/nic";
+      settings = {
+        # Use Hyprland UWSM session by default; Name from hyprland-uwsm.desktop
+        session.default = "Hyprland (uwsm-managed)";
+        # Keep greeter in sync style; palette/wallpaper will be synced from desktop via Settings → Security → Sync Now
+        appearance.scheme = "Synced";
+      };
+      cursorTheme = {
+        package = pkgs.kdePackages.breeze;
+        name = "breeze_cursors";
+      };
     };
     xdg.portal = {
       enable = true;
@@ -27,8 +35,16 @@
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
   };
 
-  flake.modules.homeManager.hyprland = { config, ... }: {
-    xdg.configFile."hypr/hyprland.lua".source =
-      config.lib.file.mkOutOfStoreSymlink "/etc/nixos/dotfiles/hypr/hyprland.lua";
+  flake.modules.homeManager.hyprland = { ... }: {
+    xdg.configFile."hypr/hyprland.lua".source = ../dotfiles/hypr/hyprland.lua;
+    xdg.configFile."hypr/binds.lua".source = ../dotfiles/hypr/binds.lua;
+    xdg.configFile."hypr/windowrules.lua".source = ../dotfiles/hypr/windowrules.lua;
+
+    xdg.configFile."noctalia/config.toml".source = ../dotfiles/noctalia/config.toml;
+
+    xdg.configFile."wallpapers" = {
+      source = ../dotfiles/backgrounds;
+      recursive = true;
+    };
   };
 }

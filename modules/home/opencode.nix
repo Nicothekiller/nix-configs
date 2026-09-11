@@ -4,7 +4,7 @@
   flake.modules.homeManager.opencode = { pkgs, ... }: {
     programs.opencode = {
       enable = true;
-      package = pkgs.unstable.opencode;
+      package = pkgs.opencode;
       settings = {
         "$schema" = "https://opencode.ai/config.json";
         permission = {

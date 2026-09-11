@@ -1,0 +1,42 @@
+# Noctalia curated config — base layer (~/.config/noctalia/).
+# GUI changes land in ~/.local/state/noctalia/settings.toml and win over this file.
+
+[shell]
+polkit_agent = true
+
+[wallpaper]
+enabled = true
+directory = "/home/nic/.config/wallpapers"
+fill_mode = "crop"
+
+[wallpaper.automation]
+enabled = true
+interval_seconds = 1800
+order = "random"
+recursive = true
+
+[theme]
+mode = "dark"
+source = "wallpaper"
+
+[theme.templates]
+enable_builtin_templates = true
+builtin_ids = [
+  "gtk3",
+  "gtk4",
+  "qt",
+  "kcolorscheme",
+  "hyprland",
+]
+enable_community_templates = false
+
+[bar.default]
+position = "top"
+radius = 0
+radius_top_left = 0
+radius_top_right = 0
+radius_bottom_left = 0
+radius_bottom_right = 0
+concave_edge_corners = false
+margin_ends = 0
+margin_edge = 0

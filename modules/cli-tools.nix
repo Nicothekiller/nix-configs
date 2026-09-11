@@ -3,7 +3,7 @@
 {
   flake.modules.nixos.cli-tools = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      unstable.neovim
+      neovim
       bat
       btop
       clang
@@ -20,7 +20,7 @@
       sqlite
       tree-sitter
       wget
-      unstable.typst
+      typst
     ];
   };
 }

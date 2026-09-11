@@ -28,6 +28,7 @@
   fileSystems."/".options = [ "compress=lzo" ];
 
   home-manager.users.nic.home.sessionVariables = {
+    HYPR_MONITOR_SCALE = "1.25";
     WLR_NO_HARDWARE_CURSORS = "1";
     GBM_BACKEND = "nvidia-drm";
     # Intel video decode to match intel-media-driver above.
