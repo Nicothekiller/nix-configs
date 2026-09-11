@@ -27,8 +27,8 @@ hl.bind("SUPER + SHIFT + E", hl.dsp.exit())
 hl.bind("CTRL + ALT + Delete", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
 
 -- === Audio Controls ===
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"), { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up 3"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down 3"), { locked = true, repeating = true })
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd(ipc .. "volume-mute"), { locked = true })
 hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd(ipc .. "mic-mute"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd(ipc .. "media toggle"), { locked = true })
@@ -54,14 +54,14 @@ hl.bind("SUPER + W", hl.dsp.group.toggle())
 -- (scrolling maximize), so route through the scrolling layout dispatcher
 -- in that case only. Everywhere else behavior is unchanged.
 local function scrollAwareFocus(dir)
-  return function()
-    local win = hl.get_active_window()
-    if win and win.fullscreen then
-      hl.dispatch(hl.dsp.layout("focus " .. dir))
-    else
-      hl.dispatch(hl.dsp.focus({ direction = dir }))
-    end
-  end
+	return function()
+		local win = hl.get_active_window()
+		if win and win.fullscreen then
+			hl.dispatch(hl.dsp.layout("focus " .. dir))
+		else
+			hl.dispatch(hl.dsp.focus({ direction = dir }))
+		end
+	end
 end
 hl.bind("SUPER + left", scrollAwareFocus("l"))
 hl.bind("SUPER + down", scrollAwareFocus("d"))
@@ -163,10 +163,16 @@ hl.bind("SUPER + CTRL + F", hl.dsp.window.fullscreen({ mode = "maximized", actio
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window" })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Resize window" })
 
-hl.bind("SUPER + code:20", hl.dsp.window.resize({ x = -100, y = 0, relative = true }),
-  { description = "Expand window left" })
-hl.bind("SUPER + code:21", hl.dsp.window.resize({ x = 100, y = 0, relative = true }),
-  { description = "Shrink window left" })
+hl.bind(
+	"SUPER + code:20",
+	hl.dsp.window.resize({ x = -100, y = 0, relative = true }),
+	{ description = "Expand window left" }
+)
+hl.bind(
+	"SUPER + code:21",
+	hl.dsp.window.resize({ x = 100, y = 0, relative = true }),
+	{ description = "Shrink window left" }
+)
 
 -- === Manual Sizing ===
 hl.bind("SUPER + minus", hl.dsp.window.resize({ x = -100, y = 0, relative = true }), { repeating = true })
