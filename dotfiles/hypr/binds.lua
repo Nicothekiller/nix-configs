@@ -17,6 +17,7 @@ hl.bind("SUPER + Y", hl.dsp.exec_cmd(ipc .. "panel-toggle wallpaper"))
 hl.bind("SUPER + TAB", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 hl.bind("SUPER + O", hl.dsp.exec_cmd(ipc .. "window-switcher"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd(ipc .. "panel-toggle session"))
+hl.bind("SUPER + P", hl.dsp.exec_cmd(ipc .. "panel-toggle nic/monitors:board"), { description = "Monitor Manager" })
 
 -- === Cheat sheet -> settings ===
 hl.bind("SUPER + SHIFT + Slash", hl.dsp.exec_cmd(ipc .. "settings-toggle"))

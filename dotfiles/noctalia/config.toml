@@ -40,3 +40,11 @@ radius_bottom_right = 0
 concave_edge_corners = false
 margin_ends = 0
 margin_edge = 0
+
+# NOTE: plugin sources and the enabled list are intentionally NOT managed
+# here. Once the Settings GUI (or IPC) writes a [plugins] table to
+# ~/.local/state/noctalia/settings.toml, that override layer wins per key
+# and arrays replace rather than merge -- so base-layer [[plugins.source]]
+# entries never surface. Manage plugins via Settings -> Plugins instead
+# (e.g. git source https://github.com/Nicothekiller/noctalia-monitor-manager
+# for nic/monitors).
