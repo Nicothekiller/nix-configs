@@ -9,7 +9,6 @@
     programs.noctalia = {
       enable = true;
       systemd.enable = true;
-      systemd.target = "hyprland-session.target";
       recommendedServices.enable = true;
     };
     services.displayManager.noctalia-greeter = {

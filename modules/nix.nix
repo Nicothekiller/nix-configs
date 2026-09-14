@@ -4,11 +4,13 @@
   flake.modules.nixos.nix = {
     nixpkgs.config.allowUnfree = true;
     nix = {
-      gc = {
-        automatic = true;
-        dates = "daily";
-        options = "--delete-older-than 7d";
-      };
+      # Replaced by programs.nh clean (keeps N generations + time window,
+      # which nix.gc cannot express). Kept for reference.
+      # gc = {
+      #   automatic = true;
+      #   dates = "daily";
+      #   options = "--delete-older-than 7d";
+      # };
       settings = {
         auto-optimise-store = true;
         experimental-features = [
@@ -26,5 +28,11 @@
       };
     };
     programs.nix-ld.enable = true;
+    programs.nh = {
+      enable = true;
+      flake = "/etc/nixos";
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 4d --keep 5";
+    };
   };
 }

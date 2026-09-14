@@ -1,9 +1,9 @@
 -- Hyprland configuration (Lua) — https://wiki.hypr.land/Configuring/Start/
 
 hl.on("hyprland.start", function()
-  hl.exec_cmd("noctalia")
-  hl.exec_cmd(
-    "systemd-inhibit --who='Hyprland' --why='power button to session panel' --what=handle-power-key --mode=block sleep infinity")
+	hl.exec_cmd(
+		"systemd-inhibit --who='Hyprland' --why='power button to session panel' --what=handle-power-key --mode=block sleep infinity"
+	)
 end)
 
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
@@ -12,62 +12,62 @@ hl.env("XCURSOR_THEME", "breeze_cursors")
 hl.env("XDG_MENU_PREFIX", "")
 
 hl.config({
-  input = {
-    kb_layout = "latam",
-    numlock_by_default = true,
-    kb_options = "caps:swapescape",
-    follow_mouse = 0,
-    touchpad = {
-      tap_to_click = true,
-      natural_scroll = false,
-    },
-  },
-  general = {
-    gaps_in = 5,
-    gaps_out = 5,
-    border_size = 2,
-    layout = "scrolling",
-  },
-  decoration = {
-    rounding = 12,
-    active_opacity = 1.0,
-    inactive_opacity = 1.0,
-    shadow = {
-      enabled = true,
-      range = 30,
-      render_power = 5,
-      offset = "0 5",
-      color = "rgba(00000070)",
-    },
-    blur = {
-      enabled = true,
-      size = 3,
-      passes = 2,
-      vibrancy = 0.1696,
-    },
-  },
-  misc = {
-    disable_hyprland_logo = true,
-    disable_splash_rendering = true,
-  },
-  xwayland = {
-    force_zero_scaling = true,
-  },
-  dwindle = {
-    preserve_split = true,
-  },
-  master = {
-    mfact = 0.5,
-  },
+	input = {
+		kb_layout = "latam",
+		numlock_by_default = true,
+		kb_options = "caps:swapescape",
+		follow_mouse = 0,
+		touchpad = {
+			tap_to_click = true,
+			natural_scroll = false,
+		},
+	},
+	general = {
+		gaps_in = 5,
+		gaps_out = 5,
+		border_size = 2,
+		layout = "scrolling",
+	},
+	decoration = {
+		rounding = 12,
+		active_opacity = 1.0,
+		inactive_opacity = 1.0,
+		shadow = {
+			enabled = true,
+			range = 30,
+			render_power = 5,
+			offset = "0 5",
+			color = "rgba(00000070)",
+		},
+		blur = {
+			enabled = true,
+			size = 3,
+			passes = 2,
+			vibrancy = 0.1696,
+		},
+	},
+	misc = {
+		disable_hyprland_logo = true,
+		disable_splash_rendering = true,
+	},
+	xwayland = {
+		force_zero_scaling = true,
+	},
+	dwindle = {
+		preserve_split = true,
+	},
+	master = {
+		mfact = 0.5,
+	},
 })
 
 -- === Monitors (replaces DMS auto outputs: pin native scale) ===
 -- Scale comes per-host from HYPR_MONITOR_SCALE (see hosts/*/local-configuration.nix).
 hl.monitor({
-  output = "eDP-1",
-  mode = "preferred",
-  position = "auto",
-  scale = tonumber(os.getenv("HYPR_MONITOR_SCALE")) or 1,
+	output = "eDP-1",
+	mode = "preferred",
+	position = "auto",
+	scale = tonumber(os.getenv("HYPR_MONITOR_SCALE")) or 1,
 })
 
 require("binds")
@@ -77,5 +77,5 @@ require("windowrules")
 -- ~/.config/hypr/noctalia.lua. Guarded so a missing file can't break the config.
 local hasNoctaliaTheme, noctaliaTheme = pcall(require, "noctalia")
 if hasNoctaliaTheme and noctaliaTheme and noctaliaTheme.apply_theme then
-  noctaliaTheme.apply_theme()
+	noctaliaTheme.apply_theme()
 end
