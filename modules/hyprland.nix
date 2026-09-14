@@ -30,6 +30,16 @@
         xdg-desktop-portal-gtk
         xdg-desktop-portal-hyprland
       ];
+      # Route file choosers to GTK; the Hyprland backend has no chooser
+      # implementation, which breaks Flatpak Firefox/Vesktop dialogs.
+      config.common = {
+        default = [
+          "hyprland"
+          "gtk"
+        ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      };
+      xdgOpenUsePortal = true;
     };
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
   };

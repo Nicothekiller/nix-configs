@@ -12,33 +12,42 @@ flake.lock                  # Pinned dependency versions
 modules/                    # Auto-imported flake-parts modules
   hosts.nix                 # NixOS outputs and host composition
   home-manager.nix          # Home Manager integration and user base
-  overlays.nix              # Shared nixpkgs overlays
-  boot.nix                  # Bootloader and kernel
+  home/                     # Home Manager feature modules (kitty, starship, fastfetch, opencode)
+  terminal/                 # Shell environment (bash, zsh, nushell, aliases, integrations, env)
+  overlays.nix              # Shared nixpkgs overlays (flatpak patch, packet tracer)
+  patches/                  # Local patches (flatpak fonts/icons fix)
+  boot.nix                  # Bootloader and kernel (systemd-boot, explicit LTS kernel)
   cli-tools.nix             # CLI and development packages
   applications.nix          # Desktop applications
   desktop-theme/            # GTK, Qt, cursor, and theme packages
   file-manager/             # Dolphin, KIO, MIME, and filesystem helpers
-  terminal/                 # Shell environment and shell integrations
   desktop-services.nix      # Flatpak and KDE Connect
-  desktop-services-system.nix # Bluetooth, PolKit, UDisks2, UPower
+  desktop-services-system.nix # Bluetooth, PolKit, UDisks2, UPower, thermald
   fonts.nix                 # System fonts
   gaming.nix                # Steam and Proton-GE
-  hyprland.nix              # Hyprland, DMS, portals, and user config
+  hyprland.nix              # Hyprland, Noctalia, portals, and user config
+  audio.nix                 # PipeWire and audio services
   locale.nix                # Timezone, locale, and keymaps
-  network.nix               # NetworkManager, firewalld, DNS
-  nix.nix                   # Nix settings and nix-ld
+  network.nix               # NetworkManager, firewalld (nftables backend), DNS
+  nix.nix                   # Nix settings, nix-ld, nh cleanup
   printing.nix              # CUPS and printer drivers
-  ssh.nix                   # OpenSSH
-  tailscale.nix             # Tailscale
-  users.nix                 # User accounts and groups
-  virtualisation.nix        # Podman and Compose tools
+  ssh.nix                   # OpenSSH (port restricted via firewalld home zone)
+  tailscale.nix             # Tailscale (manual `tailscale up`, no auth key in repo)
+  users.nix                 # User accounts and groups (password set imperatively at install)
+  secrets.nix               # Keyring/secret-service integration (no secret values)
+  system-state.nix          # system.stateVersion (25.11; home.stateVersion is 26.05)
+  virtualisation.nix        # Docker and Compose tools
+  ai-course-deps.nix        # AI course packages (ollama, jupyter)
+  redes-course-deps.nix     # Networks course packages (containerlab, wireshark, packet tracer)
+packages/                   # Local package definitions
+  cisco-packet-tracer.nix   # Cisco Packet Tracer from a local .deb (see design notes)
 hosts/                      # Host-specific NixOS modules
   nic-on-nixosbtw/          # Intel host using ext4
-    hardware-configuration.nix # Auto-generated hardware detection
+    hardware-configuration.nix # Auto-generated hardware detection (do not edit)
     local-configuration.nix # Intel VA-API settings
   nic-on-nixosbtw2/         # Intel host with NVIDIA dGPU using btrfs
-    hardware-configuration.nix # Auto-generated hardware detection
-    local-configuration.nix # NVIDIA and filesystem settings
+    hardware-configuration.nix # Auto-generated hardware detection (do not edit)
+    local-configuration.nix # NVIDIA PRIME offload and filesystem settings
 dotfiles/                   # Out-of-store application configuration
 ```
 
@@ -61,6 +70,55 @@ This repository uses the dendritic pattern with `flake-parts` and
 There is intentionally no shared `configuration.nix`, package aggregator, or
 manual module import list. Add shared features under `modules/`; add
 host-specific settings under the corresponding `hosts/` directory.
+
+### Design Notes (intentional choices -- do not "fix")
+
+- All shared modules apply to every host via `sharedModules` in
+  `modules/hosts.nix`. Per-host differences go in
+  `hosts/<hostname>/local-configuration.nix` only.
+- Firewall: `networking.firewall.enable = false` with
+  `services.firewalld.enable = true` plus `networking.nftables.enable = true`
+  is intentional. firewalld uses nftables as its backend (it fails to build
+  without the nftables option) and provides dynamic interface/network zones
+  for laptops, so rules are managed at runtime via `firewall-cmd`, not via
+  rebuilds.
+- SSH: `services.openssh.enable = true` with no Nix-level hardening because
+  the port is only open in the firewalld home zone. Do not add
+  `openFirewall` (it targets `networking.firewall`, which is disabled).
+- Users: `users.users.nic` has no declarative password. A temporary
+  `initialPassword` is added at install time and removed afterwards.
+- Packet Tracer: `flake.nix` uses an absolute
+  `path:/home/nic/Downloads/...deb` input on purpose. Cisco requires an
+  account to download it, there is nowhere to upload it, the version is
+  frozen at 9.0.1, and flake inputs evaluate without `--impure` (unlike a
+  git-ignored relative path, which Nix skips unless `git add`-ed).
+- Flatpak: `modules/overlays.nix` swaps in a local
+  `modules/patches/fix-fonts-icons.patch` by basename. The upstream PR has
+  sat unreviewed for months, so the overlay stays and fails loudly (via
+  `throw`) if nixpkgs renames or merges the patch.
+- Steam: do not manually set `hardware.graphics.enable32Bit` or
+  `hardware.steam-hardware.enable`; the `steam` module enables both
+  automatically.
+- btw2 NVIDIA: `GBM_BACKEND=nvidia-drm`, `WLR_NO_HARDWARE_CURSORS=1`, and
+  `LIBVA_DRIVER_NAME=iHD` without `nvidia-vaapi-driver` are intentional --
+  HDMI is wired to the dGPU and Intel handles decode. Bus IDs are
+  host-specific by design and stable across reboots. The default
+  `hardware.nvidia.package` tracks the stable driver, not latest.
+- Tailscale: declarative `authKeyFile`, `useRoutingFeatures`, and
+  `openFirewall` are intentionally unused (no secrets in repo, no routing
+  features, `openFirewall` targets the disabled NixOS firewall). Run
+  `tailscale up` manually.
+- Versions: `system.stateVersion = "25.11"` with
+  `home.stateVersion = "26.05"` is intentional (Home Manager adopted later).
+  Never bump either to "fix" the skew on existing installs.
+- Kernel: `boot.kernelPackages = pkgs.linuxPackages` is explicit on purpose
+  so it is easy to change later.
+- Nix GC: the commented-out `nix.gc` block in `modules/nix.nix` documents
+  the previous setup and stays until `programs.nh.clean` proves out
+  long-term. Extra `substituters`/`trusted-public-keys` append the official
+  `cache.nixos.org`; they do not replace it.
+- `hardware-configuration.nix` files are auto-generated; `fmask`/`dmask`
+  differences between hosts come from `nixos-generate-config`, do not edit.
 
 ## Build / Rebuild Commands
 

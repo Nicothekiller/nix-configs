@@ -13,7 +13,7 @@
       "$HOME/.local/bin"
       "$HOME/.cargo/bin"
       "/var/lib/flatpak/exports/bin"
-      "/.local/share/flatpak/exports/bin"
+      "$HOME/.local/share/flatpak/exports/bin"
     ];
   };
 }
