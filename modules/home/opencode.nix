@@ -7,7 +7,6 @@
       package = pkgs.opencode;
       settings = {
         "$schema" = "https://opencode.ai/config.json";
-        model = "USFQ/zai-org/GLM-5.3-Flash";
         permission = {
           bash = {
             "*" = "ask";
