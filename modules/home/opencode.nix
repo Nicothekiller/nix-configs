@@ -7,6 +7,7 @@
       package = pkgs.opencode;
       settings = {
         "$schema" = "https://opencode.ai/config.json";
+        model = "USFQ/zai-org/GLM-5.3-Flash";
         permission = {
           bash = {
             "*" = "ask";
@@ -101,11 +102,18 @@
         provider."USFQ" = {
           name = "USFQ models";
           options.baseURL = "https://ai.usfq.edu.ec/api/agents/llm/main/v1";
-          models."deepseek-ai/DeepSeek-V4-Flash-0731" = {
-            name = "DeepSeek V4 Flash";
-            limit = {
-              context = 1048576;
-              output = 384000;
+          models."zai-org/GLM-5.3-Flash" = {
+            name = "GLM 5.3 Flash";
+            attachment = true;
+            tool_call = true;
+            limit.context = 262144;
+            limit.output = 128000;
+            modalities = {
+              input = [
+                "text"
+                "image"
+              ];
+              output = [ "text" ];
             };
           };
         };
