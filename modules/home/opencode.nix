@@ -5,114 +5,122 @@
     programs.opencode = {
       enable = true;
       package = pkgs.opencode;
-      settings = {
-        "$schema" = "https://opencode.ai/config.json";
-        permission = {
-          bash = {
-            "*" = "ask";
-            "basename" = "allow";
-            "basename *" = "allow";
-            "cal" = "allow";
-            "cal *" = "allow";
-            "cat *" = "allow";
-            "cmp" = "allow";
-            "cmp *" = "allow";
-            "column *" = "allow";
-            "cut *" = "allow";
-            "date" = "allow";
-            "date *" = "allow";
-            "df" = "allow";
-            "df *" = "allow";
-            "diff" = "allow";
-            "diff *" = "allow";
-            "dirname" = "allow";
-            "dirname *" = "allow";
-            "du" = "allow";
-            "du *" = "allow";
-            "echo *" = "allow";
-            "fd" = "allow";
-            "fd *" = "allow";
-            "file" = "allow";
-            "file *" = "allow";
-            "find" = "allow";
-            "find *" = "allow";
-            "fold *" = "allow";
-            "git blame" = "allow";
-            "git blame *" = "allow";
-            "git diff" = "allow";
-            "git diff *" = "allow";
-            "git log" = "allow";
-            "git log *" = "allow";
-            "git reflog" = "allow";
-            "git reflog *" = "allow";
-            "git shortlog" = "allow";
-            "git shortlog *" = "allow";
-            "git show" = "allow";
-            "git show *" = "allow";
-            "git status" = "allow";
-            "git status *" = "allow";
-            "grep" = "allow";
-            "grep *" = "allow";
-            "head" = "allow";
-            "head *" = "allow";
-            "id" = "allow";
-            "id *" = "allow";
-            "less" = "allow";
-            "less *" = "allow";
-            "ls" = "allow";
-            "ls *" = "allow";
-            "more" = "allow";
-            "more *" = "allow";
-            "nl *" = "allow";
-            "nixos-version" = "allow";
-            "nixos-version *" = "allow";
-            "printf *" = "allow";
-            "ps" = "allow";
-            "ps *" = "allow";
-            "pwd" = "allow";
-            "realpath" = "allow";
-            "realpath *" = "allow";
-            "rev *" = "allow";
-            "rg" = "allow";
-            "rg *" = "allow";
-            "sort *" = "allow";
-            "stat" = "allow";
-            "stat *" = "allow";
-            "tac *" = "allow";
-            "tail" = "allow";
-            "tail *" = "allow";
-            "tr *" = "allow";
-            "tree" = "allow";
-            "tree *" = "allow";
-            "uname" = "allow";
-            "uname *" = "allow";
-            "uniq *" = "allow";
-            "uptime" = "allow";
-            "wc" = "allow";
-            "wc *" = "allow";
-            "which" = "allow";
-            "which *" = "allow";
-            "whoami" = "allow";
-          };
-          edit = "ask";
-          webfetch = "ask";
-        };
 
-        provider."USFQ" = {
+      validateFiles.config = true;
+
+      settings = {
+        update = "disable";
+
+        permissions = [
+          {
+            action = "shell";
+            resource = "*";
+            effect = "ask";
+          }
+        ]
+        ++
+          map
+            (cmd: {
+              action = "shell";
+              resource = "${cmd} *";
+              effect = "allow";
+            })
+            [
+              "basename"
+              "cal"
+              "cat"
+              "cmp"
+              "column"
+              "cut"
+              "date"
+              "df"
+              "diff"
+              "dirname"
+              "du"
+              "echo"
+              "fd"
+              "file"
+              "find"
+              "fold"
+              "git blame"
+              "git diff"
+              "git log"
+              "git reflog"
+              "git shortlog"
+              "git show"
+              "git status"
+              "grep"
+              "head"
+              "id"
+              "less"
+              "ls"
+              "more"
+              "nl"
+              "nixos-version"
+              "printf"
+              "ps"
+              "pwd"
+              "realpath"
+              "rev"
+              "rg"
+              "sort"
+              "stat"
+              "tac"
+              "tail"
+              "tr"
+              "tree"
+              "uname"
+              "uniq"
+              "uptime"
+              "wc"
+              "which"
+              "whoami"
+            ]
+        ++ [
+          {
+            action = "edit";
+            resource = "*";
+            effect = "ask";
+          }
+          {
+            action = "webfetch";
+            resource = "*";
+            effect = "ask";
+          }
+          {
+            action = "external_directory";
+            resource = "*";
+            effect = "ask";
+          }
+          {
+            action = "external_directory";
+            resource = "~/.opencode/*";
+            effect = "allow";
+          }
+          {
+            action = "external_directory";
+            resource = "/tmp/opencode/*";
+            effect = "allow";
+          }
+        ];
+
+        providers.USFQ = {
           name = "USFQ models";
-          options.baseURL = "https://ai.usfq.edu.ec/api/agents/llm/main/v1";
+          package = "@opencode/ai/providers/openai-compatible";
+          settings.baseURL = "https://ai.usfq.edu.ec/api/agents/llm/main/v1";
           models."zai-org/GLM-5.3-Flash" = {
             name = "GLM 5.3 Flash";
-            attachment = true;
-            tool_call = true;
-            limit.context = 262144;
-            limit.output = 128000;
-            modalities = {
+            capabilities = {
+              tools = true;
               input = [
                 "text"
                 "image"
               ];
               output = [ "text" ];
+            };
+            limit = {
+              context = 262144;
+              output = 128000;
             };
           };
         };
