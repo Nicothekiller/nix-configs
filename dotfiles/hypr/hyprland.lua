@@ -35,7 +35,7 @@ hl.config({
 		shadow = {
 			enabled = true,
 			range = 30,
-			render_power = 5,
+			render_power = 4,
 			offset = "0 5",
 			color = "rgba(00000070)",
 		},
@@ -44,6 +44,16 @@ hl.config({
 			size = 3,
 			passes = 2,
 			vibrancy = 0.1696,
+		},
+		-- Hyprland 0.57 window wobble (compiz-style). See
+		-- https://wiki.hypr.land/configuring/core/config-options/#wobble
+		wobble = {
+			enabled = true,
+			mesh = 12,
+			stiffness = 200,
+			damping = 12,
+			mass = 1,
+			intensity = 0.2,
 		},
 	},
 	misc = {

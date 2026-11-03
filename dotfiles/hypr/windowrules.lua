@@ -22,6 +22,7 @@ hl.window_rule({
   match = { class = "^(steam)$", title = "^(notificationtoasts)" },
   no_initial_focus = true,
   pin = true,
+  no_wobble = true,
 })
 hl.window_rule({
   match = { title = "^(Picture-in-Picture)$" },
