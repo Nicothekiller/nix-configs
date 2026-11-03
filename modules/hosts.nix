@@ -6,6 +6,9 @@ in
 {
   flake.nixosConfigurations.nic-on-nixosbtw = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
+    specialArgs = {
+      kernelPackages = (import inputs.nixpkgs-kernel { system = "x86_64-linux"; }).linuxPackages;
+    };
     modules = sharedModules ++ [
       inputs.home-manager.nixosModules.home-manager
       ../hosts/nic-on-nixosbtw/hardware-configuration.nix
