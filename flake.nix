@@ -2,9 +2,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Kernel 6.18.57 for nic-on-nixosbtw only: newer kernels hang on suspend
-    # on that machine. Pinned by rev from flake-lock commit 761d843. Only the
-    # kernel comes from here, userspace stays on the nixpkgs input above.
+    # Kernel pin (6.18.57) for nic-on-nixosbtw, currently unused while that
+    # host tests the latest stable kernel; kept as a quick fallback. Pinned
+    # by rev from flake-lock commit 761d843. Only the kernel comes from here,
+    # userspace stays on the nixpkgs input above.
     # Bump this rev deliberately; `nix flake update` does not touch it.
     nixpkgs-kernel = {
       url = "github:NixOS/nixpkgs/02c087f3fe673c9e317f206a627cb6b910336dbe";
