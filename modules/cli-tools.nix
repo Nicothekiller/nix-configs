@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   flake.modules.nixos.cli-tools = { pkgs, ... }: {
@@ -21,6 +21,7 @@
       tree-sitter
       wget
       typst
+      inputs.autolith.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   };
 }

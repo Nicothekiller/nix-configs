@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   flake.modules.nixos.applications = { pkgs, ... }: {
@@ -7,6 +7,7 @@
       firewalld-gui
       haruna
       vesktop
+      inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   };
 }
