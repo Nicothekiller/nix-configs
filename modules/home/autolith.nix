@@ -53,13 +53,24 @@
       (setf autolith:*debug-adapter-program*
             "${pkgs.llvmPackages.lldb}/bin/lldb-dap")
 
+      (load "${./autolith-usfq.lisp}")
+
+      (unless *nic-usfq-headers-wrapper*
+        (define-context-contributor nic-usfq-header-warning (request)
+          (declare (ignore request))
+          (make-context-contribution
+           :identifier "nic-usfq-header-warning"
+           :priority 100
+           :instruction
+           "USFQ X-Session-Id is disabled because its compatibility check failed. Tell the user, ask for permission, and then review autolith-usfq.lisp.")))
+
       (define-context-contributor nic-agent-instructions (request)
         (declare (ignore request))
         (make-context-contribution
          :identifier "nic-agent-instructions"
          :priority 100
          :instruction
-         "Avoid Python unless it is necessary or the best solution. Use jq and yq to parse JSON and YAML. Never commit or perform destructive operations without an explicit user request or approval."))
+         "Avoid Python unless it is necessary or the best solution. Use jq and yq to parse JSON and YAML. Never commit or perform destructive operations without an explicit user request or approval. Use the exact tool argument names in the schema, including kebab-case names such as base-revision. Camel case arguments WILL fail."))
       (register-openai-compatible-provider
        :name                         "usfq"
        :description                  "USFQ models"
