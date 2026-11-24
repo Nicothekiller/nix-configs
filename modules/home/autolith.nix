@@ -53,17 +53,6 @@
       (setf autolith:*debug-adapter-program*
             "${pkgs.llvmPackages.lldb}/bin/lldb-dap")
 
-      (load "${./autolith-usfq.lisp}")
-
-      (unless *nic-usfq-headers-wrapper*
-        (define-context-contributor nic-usfq-header-warning (request)
-          (declare (ignore request))
-          (make-context-contribution
-           :identifier "nic-usfq-header-warning"
-           :priority 100
-           :instruction
-           "USFQ X-Session-Id is disabled because its compatibility check failed. Tell the user, ask for permission, and then review autolith-usfq.lisp.")))
-
       (define-context-contributor nic-agent-instructions (request)
         (declare (ignore request))
         (make-context-contribution
@@ -77,6 +66,9 @@
        :endpoint                     "https://ai.usfq.edu.ec/api/agents/llm/main/v1/chat/completions"
        :models-endpoint              "https://ai.usfq.edu.ec/api/agents/llm/main/v1/models"
        :api-key-environment-variable "USFQ_API_KEY"
+       :request-headers
+       (lambda (conversation)
+         (list (cons "X-Session-Id" (conversation-identifier conversation))))
        :models '((:name "zai-org/GLM-5.3-Flash"
                   :description "GLM 5.3 Flash"
                   :context-window 262144)))

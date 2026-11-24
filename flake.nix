@@ -14,7 +14,7 @@
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:denful/import-tree";
-    autolith.url = "github:lambda-symbolics/autolith/v0.67.67";
+    autolith.url = "github:lambda-symbolics/autolith/v0.69.0";
 
     helium = {
       url = "github:oxcl/nix-flake-helium-browser";
