@@ -61,23 +61,25 @@ def krn [str: string] {
 #
 # By default, it opens:
 # - Neovim in the current tab
-# - Opencode in another tab (only when -o / --opc is passed)
+# - autolith in another tab (only when -a / --ath is passed)
 # - A tab for commands
 def dev [
-  --opc (-o) # Include an opencode tab
+  --ath (-a) # Include an autolith tab
   --nix-shell (-n) # Run nix develop as well
 ] {
   if not $nix_shell {
     kitten @ set-tab-title nvim
-    if $opc {
-      kitten @ launch --type=tab --title=opencode --cwd=current -- nu -e opencode
+    if $ath {
+      kitten @ launch --type=tab --title=autolith --cwd=current -- nu -e autolith
     }
     kitten @ launch --type=tab --title=commands --cwd=current
     kitten @ send-text "nvim\n"
   } else {
+    print $"(ansi green)Adding nix dependencies to cache...(ansi reset)"
+    nix develop -c echo done
     kitten @ set-tab-title nvim
-    if $opc {
-      kitten @ launch --type=tab --title=opencode --cwd=current -- nix develop -c -- nu -e opencode
+    if $ath {
+      kitten @ launch --type=tab --title=autolith --cwd=current -- nix develop -c -- nu -e autolith
     }
     kitten @ launch --type=tab --title=commands --cwd=current -- nix develop -c nu
     kitten @ send-text "nix develop -c -- nu -e nvim\n"
